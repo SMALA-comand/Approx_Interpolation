@@ -18,16 +18,16 @@ quadratic_plan = quadratic_function(coord=plan)[1]
 y_quadratic = [i[2] for i in quadratic_plan]
 
 # считаем аппроксимацию функцией нормального распределения
-y_normal = [1]*50
+y_normal = [1]*len(x)
 
 # считаем интерполяцию Лагранжем
-y_lagr = [1]*50
+y_lagr = [1]*len(x)
 
 # считаем интерполяцию Ньютоном
-y_newton = [1]*50
+y_newton = [1]*len(x)
 
 # считаем аинтерполяцию сплайнами
-y_cube = [1]*50
+y_cube = [1]*len(x)
 
 # считаем аппроксимацию numpy
 c = np.polyfit(x, y, 2)
@@ -36,7 +36,7 @@ y_num_apr = [p(i) for i in x]
 label_numpy = f'{round(c[0], 3)}x² + {round(c[1], 3)}x + {round(c[2], 3)}'
 
 # считаем интерполяцию numpy
-y_num_inter = [1]*50
+y_num_inter = [1]*len(x)
 
 
 ##############################################################
