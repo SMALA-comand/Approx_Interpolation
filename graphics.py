@@ -42,22 +42,21 @@ y_num_inter = [1]*50
 
 
 y_plan = [y_linear, y_quadratic, y_normal, y_lagr, y_newton, y_cube, y_num_apr, y_num_inter]
-labels = ['лин. аппрокс', 'квадр. аппрокс', 'норм. аппрокс',
-          'Лагр. интер', 'Ньют. интер', 'Куб. интер', 'numpy аппрокс', 'numpy интерп']
+
 titles = ['линейная аппроксимация', 'квадратичная аппроксимация', 'аппроксимация норм. распред.',
           'Интерполяция Лагранжем', 'Интерполяция Ньютона', 'Интерполяция куб. сплайном',
           'Аппроксимация NumPy', 'Интерполяция NumPy']
 
-fig, axes = plt.subplots(3, 3)
+labels_func = [linear_function(coord=plan)[0], quadratic_function(coord=plan)[0], '', '', '', '', '', '']
 
-print(len(labels), len(titles), len(y_plan), len(y_quadratic))
+fig, axes = plt.subplots(3, 3)
 
 i = 0
 for ax in axes.ravel():
     if i == 8:
         break
     ax.plot(x, y, linestyle='-.', label='точки')
-    ax.plot(x, y_plan[i], label=labels[i])
+    ax.plot(x, y_plan[i], label=labels_func[i])
     ax.legend(loc='upper right')
     ax.set_title(titles[i])
     i += 1
