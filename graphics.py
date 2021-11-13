@@ -33,6 +33,7 @@ y_cube = [1]*50
 c = np.polyfit(x, y, 2)
 p = np.poly1d(c)
 y_num_apr = [p(i) for i in x]
+label_numpy = f'{round(c[0], 3)}x² + {round(c[1], 3)}x + {round(c[2], 3)}'
 
 # считаем интерполяцию numpy
 y_num_inter = [1]*50
@@ -47,7 +48,7 @@ titles = ['линейная аппроксимация', 'квадратична
           'Интерполяция Лагранжем', 'Интерполяция Ньютона', 'Интерполяция куб. сплайном',
           'Аппроксимация NumPy', 'Интерполяция NumPy']
 
-labels_func = [linear_function(coord=plan)[0], quadratic_function(coord=plan)[0], '', '', '', '', '', '']
+labels_func = [linear_function(coord=plan)[0], quadratic_function(coord=plan)[0], '', '', '', '', label_numpy, '1']
 
 fig, axes = plt.subplots(3, 3)
 
