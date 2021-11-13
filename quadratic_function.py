@@ -1,13 +1,13 @@
 import numpy as np
-import sympy
 from csv_reader import get_csv_coord
 
 
 def quadratic_function(coord):
     """
-
-    :param coord: координаты точек в форме массива [[x1, y1], [x2, y2], ...]
+        :param coord: координаты точек в форме массива [[x1, y1], [x2, y2], ...]
+        :return: возвращает кортеж (функция в виде строки, [[x1, y1, f1], ...], дисперсия)
     """
+
     ### для первого уравнения
     for_c2_1 = sum([i[0]**4 for i in coord])
     for_c1_1 = sum([i[0]**3 for i in coord])
