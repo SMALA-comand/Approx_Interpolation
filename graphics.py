@@ -30,7 +30,7 @@ newton_plan = newton_interpolation(coord=plan)[1]
 y_newton = [i[1] for i in linear_plan]
 
 # считаем интерполяцию сплайнами
-y_cube = [1]*len(x)
+y_cube = cubic_spline_interpolation(coord=plan, x0 = np.linspace(x[0], x[-1], 50))
 
 # считаем аппроксимацию numpy
 c = np.polyfit(x, y, 2)
@@ -53,7 +53,7 @@ titles = ['линейная аппроксимация', 'квадратична
           'Интерполяция Лагранжем', 'Интерполяция Ньютона', 'Интерполяция куб. сплайном',
           'Аппроксимация NumPy', 'Интерполяция NumPy']
 
-labels_func = [linear_function(coord=plan)[0], quadratic_function(coord=plan)[0], '', 'Interpolated f(x)','Interpolated f(x)' , '', label_numpy, 'Interpolated f(x)']
+labels_func = [linear_function(coord=plan)[0], quadratic_function(coord=plan)[0], '', 'Interpolated f(x)','Interpolated f(x)' , 'Interpolated f(x)', label_numpy, 'Interpolated f(x)']
 
 fig, axes = plt.subplots(3, 3)
 
