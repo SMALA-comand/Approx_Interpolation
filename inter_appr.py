@@ -94,13 +94,13 @@ def lagrange_interpolation(coord, delta=0):
     cof = [i for i in cof1]
     # Массив  точек в формате [x,y]
     ans = [[i[0], i[1]] for i in l_res.items()]
-    out_ans = [[j[0] for j in l_res.items()], [i[1] for i in l_res.items()]]
     print(f'Массив  точек в формате [xi,fi] (fi – значение интерполированной функции в точках): {ans}')
     x = Symbol('x')
     expr = 0
     for i in range(len(coord)):
         expr += (x ** i) * cof[i]
     print(expr)
+    out_ans = [expr, ans]
     return out_ans
 
 
@@ -155,14 +155,12 @@ def newton_interpolation(coord, delta=0):
         if delta == 0:
             # Массив  точек в формате [xi, yi, fi]
             ans = []
-            out_ans = [[j[0] for j in l_res.items()], [i[1] for i in l_res.items()]]
             for i in range(len(y_coord)):
                 ans.append([x_coord[i], y_coord[i], l_res[x_coord[i]]])
             print(f'Массив  точек в формате [xi, yi, fi] (fi – значение интерполированной функции в точках): {ans}')
         else:
             # Массив  точек в формате [x,y]
             ans = [[i[0], i[1]] for i in l_res.items()]
-            out_ans = [[j[0] for j in l_res.items()], [i[1] for i in l_res.items()]]
             print(f'Массив  точек в формате [xi,fi] (fi – значение интерполированной функции в точках): {ans}')
         # Вывод многочлена Ньютона
         x = Symbol('x')
@@ -170,6 +168,7 @@ def newton_interpolation(coord, delta=0):
         for i in range(len(coord)):
             expr += fraction_u(s=x_coord, x=x, i=i, t=2) * cof[i + 1]
         print(expr)
+        out_ans = [expr, ans]
         return out_ans
 
     else:
