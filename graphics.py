@@ -12,17 +12,19 @@ def get_graphics(path = "cvss.csv"):
     x = [i[0] for i in plan]
     y = [i[1] for i in plan]
 
+
     # считаем аппроксимацию линейной функцией
     linear_plan = linear_function(coord=plan)[1]
     y_linear = [i[2] for i in linear_plan]
 
+
     # считаем аппроксимацию квадратичной функцией
     quadratic_plan = quadratic_function(coord=plan)[1]
-    y_quadratic = [i[2] for i in quadratic_plan]
+    y_quadratic = [i[3] for i in quadratic_plan]
 
     # считаем аппроксимацию функцией нормального распределения
     gauss_f, gauss_plan = gauss_function(coords = plan)
-    y_normal = [i[2] for i in gauss_plan]
+    y_normal = [i[4] for i in gauss_plan]
     #y_normal = [1 for i in plan]
 
     # считаем интерполяцию Лагранжем
