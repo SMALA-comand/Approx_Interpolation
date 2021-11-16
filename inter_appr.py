@@ -97,10 +97,15 @@ def lagrange_interpolation(coord, delta=0):
     #print(f'Массив  точек в формате [xi,fi] (fi – значение интерполированной функции в точках): {ans}')
     x = Symbol('x')
     expr = 0
+    ans2 = []
     for i in range(len(coord)):
         expr += (x ** i) * cof[i]
+    for el in x_coord:
+        for i in range(len(cof)):
+            ans2.append([el, (el ** i)*cof[i]])
+
     #print(expr)
-    out_ans = [expr, ans]
+    out_ans = [expr, ans2]
     return out_ans
 
 
