@@ -8,15 +8,20 @@ def check_distance(coord):
          Проверка равноотстояние точек
         :param coord: Список с координатми
     """
-    x_coord = [x[0] for x in coord]
-    d = coord[1][0] - coord[0][0]
+    x_coord = [round(x[0],1) for x in coord]
+    #print(x_coord)
+    d = x_coord[1] - x_coord[0]
     s = x_coord[0]
+    #print(s)
     for x in x_coord:
         if s == x:
             s += d
+            s = round(s,1)
             continue
         else:
+            #print(False)
             return False
+    #print(True)
     return True
 
 
@@ -119,7 +124,7 @@ def newton_interpolation(coord, delta=0):
     if check_distance(coord):
 
         # Координаты изначальных точек
-        x_coord = [x[0] for x in coord]
+        x_coord = [round(x[0],1) for x in coord]
         y_coord = [y[1] for y in coord]
 
         # Некоторые константы
@@ -161,7 +166,7 @@ def newton_interpolation(coord, delta=0):
             # Массив  точек в формате [xi, yi, fi]
             ans = []
             for i in range(len(y_coord)):
-                ans.append([x_coord[i], y_coord[i], l_res[x_coord[i]]])
+                ans.append([x_coord[i], y_coord[i]])
             #print(f'Массив  точек в формате [xi, yi, fi] (fi – значение интерполированной функции в точках): {ans}')
         else:
             # Массив  точек в формате [x,y]

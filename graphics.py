@@ -13,6 +13,7 @@ def get_graphics(path = "cvss.csv"):
     y = [i[1] for i in plan]
 
 
+
     # считаем аппроксимацию линейной функцией
     linear_plan = linear_function(coord=plan)[1]
     y_linear = [i[2] for i in linear_plan]
@@ -41,6 +42,7 @@ def get_graphics(path = "cvss.csv"):
         newton_f = 'Interpolated f(x)'
         newton_plan = newton_plan[1]
         y_newton = [i for i in newton_plan]
+        print(y_newton)
 
     # считаем интерполяцию сплайнами
     y_cube = cubic_spline_interpolation(coord=plan, x0 = np.linspace(x[0], x[-1], 100))
@@ -88,7 +90,7 @@ def get_graphics(path = "cvss.csv"):
 if __name__ == '__main__':
     #path = input('Введите пусть:')
     path = "cvss.csv"
-    path = "C:\\Users\Вячеслав\Downloads\subject4_Test2.csv"
+    path = "D:\Projects\Approx_Interpolation\subject4_Test2.csv"
     coord = get_graphics(path = path)
 
 
