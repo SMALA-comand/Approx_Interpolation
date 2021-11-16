@@ -172,7 +172,7 @@ def newton_interpolation(coord, delta=0):
         return out_ans
 
     else:
-        return print('Равноотсояние точек не соблюденно, невозможно применить метод!')
+        return 'Равноотсояние точек не соблюденно, невозможно применить метод!'
 
 
 def cubic_spline_interpolation(coord, x0=[]):

@@ -30,11 +30,18 @@ def get_graphics(path = "cvss.csv"):
     y_lagr = [i[1] for i in linear_plan]
 
     # считаем интерполяцию Ньютоном
-    newton_plan = newton_interpolation(coord=plan)[1]
-    y_newton = [i[1] for i in linear_plan]
+
+    newton_plan = newton_interpolation(coord=plan)
+    if newton_plan == 'Равноотсояние точек не соблюденно, невозможно применить метод!':
+        newton_f = "Невозможно построить"
+        y_newton = [1] * len(x)
+    else:
+        newton_f = 'Interpolated f(x)'
+        newton_plan = newton_plan[1]
+        y_newton = [i for i in newton_plan]
 
     # считаем интерполяцию сплайнами
-    y_cube = cubic_spline_interpolation(coord=plan, x0 = np.linspace(x[0], x[-1], 50))
+    y_cube = cubic_spline_interpolation(coord=plan, x0 = np.linspace(x[0], x[-1], 100))
 
     # считаем аппроксимацию numpy
     c = np.polyfit(x, y, 2)
@@ -57,7 +64,7 @@ def get_graphics(path = "cvss.csv"):
               'Интерполяция Лагранжем', 'Интерполяция Ньютона', 'Интерполяция куб. сплайном',
               'Аппроксимация NumPy', 'Интерполяция NumPy']
 
-    labels_func = [linear_function(coord=plan)[0], quadratic_function(coord=plan)[0], gauss_f, 'Interpolated f(x)','Interpolated f(x)' , 'Interpolated f(x)', label_numpy, 'Interpolated f(x)']
+    labels_func = [linear_function(coord=plan)[0], quadratic_function(coord=plan)[0], gauss_f, 'Interpolated f(x)',newton_f , 'Interpolated f(x)', label_numpy, 'Interpolated f(x)']
 
     fig, axes = plt.subplots(3, 3)
 
