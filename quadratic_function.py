@@ -2,7 +2,7 @@ import numpy as np
 from csv_reader import get_csv_coord
 
 
-def quadratic_function(coord):
+def quadratic_function(coord, is_gauss = 0):
     """
         :param coord: координаты точек в форме массива [[x1, y1], [x2, y2], ...]
         :return: возвращает кортеж (функция в виде строки, [[x1, y1, f1], ...], дисперсия)
@@ -32,6 +32,9 @@ def quadratic_function(coord):
     c2 = c[0]
     c1 = c[1]
     c0 = c[2]
+
+    if is_gauss == 1:
+        return(c0, c1, c2)
 
     answer_b = f'y = {round(c2, 3)}x²'
     if c1 < 0:
