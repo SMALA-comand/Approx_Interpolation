@@ -107,7 +107,7 @@ def lagrange_interpolation(coord, delta=0):
         expr += (x ** i) * cof[i]
     for el in x_coord:
         for i in range(len(cof)):
-            ans2.append([el, (el ** i)*cof[i]])
+            ans2.append([el, ((el ** i)*cof[i])])
 
     #print(expr)
     out_ans = [expr, ans2]

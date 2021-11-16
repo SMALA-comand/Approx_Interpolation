@@ -7,11 +7,25 @@ from inter_appr import *
 from gauss_function import gauss_function
 
 def get_graphics(path = "cvss.csv"):
-
+    # Для subject4_Test2.csv
     plan = get_csv_coord(path)
+    # Для курса валюты
+    plan2 = get_csv_coord(path2)
+
     x = [i[0] for i in plan]
     y = [i[1] for i in plan]
 
+    # Для курса валюты
+    x2 = [i[0] for i in plan2]
+    y2 = [i[1] for i in plan2]
+
+    # Посчитаем кусочную линейную апроксимацию по частям (9 частей по 27)
+    y_linear2 = []
+    for j in range(1,10):
+        plan3 = plan2[(27*j-27):27*j]
+        linear_plan2 = linear_function(coord=plan3)[1]
+        for k in linear_plan2:
+            y_linear2.append(k[2])
 
 
     # считаем аппроксимацию линейной функцией
@@ -40,8 +54,8 @@ def get_graphics(path = "cvss.csv"):
         y_newton = [1] * len(x)
     else:
         newton_f = 'Interpolated f(x)'
-        newton_plan = newton_plan[1]
-        y_newton = [i for i in newton_plan]
+        newton_plan_0 = newton_plan[1]
+        y_newton = [i[1] for i in newton_plan_0]
         print(y_newton)
 
     # считаем интерполяцию сплайнами
@@ -62,22 +76,26 @@ def get_graphics(path = "cvss.csv"):
     ##############################################################
 
 
-    y_plan = [y_linear, y_quadratic, y_normal, y_lagr, y_newton, y_cube, y_num_apr, y_num_inter]
+    y_plan = [y_linear, y_quadratic, y_normal, y_lagr, y_newton, y_cube, y_num_apr, y_num_inter,y_linear2]
 
     titles = ['линейная аппроксимация', 'квадратичная аппроксимация', 'аппроксимация норм. распред.',
               'Интерполяция Лагранжем', 'Интерполяция Ньютона', 'Интерполяция куб. сплайном',
-              'Аппроксимация NumPy', 'Интерполяция NumPy']
+              'Аппроксимация NumPy', 'Интерполяция NumPy','Кусочная линейная апроксимация Курс_валюты']
 
-    labels_func = [linear_function(coord=plan)[0], quadratic_function(coord=plan)[0], gauss_f, 'Interpolated f(x)',newton_f , 'Interpolated f(x)', label_numpy, 'Interpolated f(x)']
+    labels_func = [linear_function(coord=plan)[0], quadratic_function(coord=plan)[0], gauss_f, 'Interpolated f(x)',newton_f , 'Interpolated f(x)', label_numpy, 'Interpolated f(x)','Апроксимирована кусочно']
 
     fig, axes = plt.subplots(3, 3)
 
     i = 0
     for ax in axes.ravel():
-        if i == 8:
+        if i == 9:
             break
-        ax.plot(x, y, linestyle='-.', label='точки')
-        ax.plot(x, y_plan[i], '-x', label=labels_func[i])
+        if i == 8:
+            ax.plot(x2, y2, linestyle='-.', label='точки')
+            ax.plot(x2, y_plan[i], '-x', label=labels_func[i])
+        else:
+            ax.plot(x, y, linestyle='-.', label='точки')
+            ax.plot(x, y_plan[i], '-x', label=labels_func[i])
         ax.legend(loc='best')
         ax.set_title(titles[i])
         i += 1
@@ -91,6 +109,7 @@ if __name__ == '__main__':
     #path = input('Введите пусть:')
     path = "cvss.csv"
     path = "D:\Projects\Approx_Interpolation\subject4_Test2.csv"
+    path2 = "D:\Projects\Approx_Interpolation\Курс_валюты.csv"
     coord = get_graphics(path = path)
 
 
