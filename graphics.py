@@ -3,8 +3,8 @@ import numpy as np
 from csv_reader import get_csv_coord
 from linear_function import linear_function
 from quadratic_function import quadratic_function
-from inter_appr import *
 from gauss_function import gauss_function
+from inter_appr import *
 
 def get_graphics(path = "cvss.csv"):
     # Для subject4_Test2.csv

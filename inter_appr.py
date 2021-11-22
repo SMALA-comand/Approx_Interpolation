@@ -1,6 +1,10 @@
 import numpy as np
 from sympy import Symbol
 import math
+from scipy.signal import argrelextrema
+from linear_function import linear_function
+from quadratic_function import quadratic_function
+from gauss_function import gauss_function
 
 
 def check_distance(coord):
@@ -260,6 +264,55 @@ def cubic_spline_interpolation(coord, x0=[]):
           (yi0 / hi1 - zi0 * hi1 / 6) * (xi1 - x0)
 
     return ans
+
+
+def splitting_appr (coord):
+    """
+        Алгоритм аппроксимации по подвыборкам
+        :param coord: Список с координатми
+    """
+    # Координаты изначальных точек
+    x_coord = [x[0] for x in coord]
+    y_coord = np.array([y[1] for y in coord])
+
+    # 1) Находим в выборке локальные экстремумы:
+    idx_minimas = argrelextrema(y_coord, np.less)[0]  # Индексы локальных минимумов
+    idx_maximas = argrelextrema(y_coord, np.greater)[0]  # Индексы локальных максимумов
+    idx = np.sort(np.concatenate((idx_minimas, idx_maximas))) # Всё вместе и отсортированно
+
+    # 2) Заносим в отдельный массив координаты точек, являющихся соседними противоположными парами:3
+    # Получееные индексы координат для "сшива"
+    dividing_index = []
+
+    prev_min_idx = idx_minimas[0]
+    prev_max_idx = idx_maximas[0]
+
+    for extreme in idx:
+        if extreme in idx_minimas:
+            prev_min_idx = extreme
+        elif extreme in idx_maximas:
+            prev_max_idx = extreme
+        # 3) и 4)
+        if abs(prev_min_idx - prev_max_idx) >= 20:
+            value = (prev_min_idx + prev_max_idx) / 2
+            dividing_index.append(value)
+
+    index = 0
+    for i in dividing_index:
+        new_coord = coord[index:i+1]
+        y_lin0 = linear_function(new_coord)
+        y_quad0 = quadratic_function(new_coord)
+        y_gauss0 = gauss_function(new_coord)
+        y_lin = [i[2] for i in y_lin0]
+        y_quad = [i[2] for i in y_quad0]
+        y_gauss = [i[2] for i in y_gauss0]
+
+        # Считаем дисперсию и выбираем лучший вариант для аппроксимации
+
+
+        index = i
+
+    return
 
 # Для теста:
 
