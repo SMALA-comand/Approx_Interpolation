@@ -308,6 +308,7 @@ def splitting_appr (coord):
         y_gauss = [i[2] for i in y_gauss0]
 
         # Считаем дисперсию и выбираем лучший вариант для аппроксимации
+        # sum(y - yi)^2   min ?
 
 
         index = i
