@@ -5,6 +5,7 @@ from scipy.signal import argrelextrema
 from linear_function import linear_function
 from quadratic_function import quadratic_function
 from gauss_function import gauss_function
+# Нужно прописать установку pip install scipy
 
 
 def check_distance(coord):
@@ -266,7 +267,7 @@ def cubic_spline_interpolation(coord, x0=[]):
     return ans
 
 
-def splitting_appr (coord):
+def splitting_appr(coord):
     """
         Алгоритм аппроксимации по подвыборкам
         :param coord: Список с координатми
@@ -280,10 +281,9 @@ def splitting_appr (coord):
     idx_maximas = argrelextrema(y_coord, np.greater)[0]  # Индексы локальных максимумов
     idx = np.sort(np.concatenate((idx_minimas, idx_maximas))) # Всё вместе и отсортированно
 
-    # 2) Заносим в отдельный массив координаты точек, являющихся соседними противоположными парами:3
+    # 2) Заносим в отдельный массив координаты точек, являющихся соседними противоположными парами:
     # Получееные индексы координат для "сшива"
     dividing_index = []
-
     prev_min_idx = idx_minimas[0]
     prev_max_idx = idx_maximas[0]
 
@@ -297,23 +297,54 @@ def splitting_appr (coord):
             value = (prev_min_idx + prev_max_idx) / 2
             dividing_index.append(value)
 
-    index = 0
-    for i in dividing_index:
-        new_coord = coord[index:i+1]
-        y_lin0 = linear_function(new_coord)
-        y_quad0 = quadratic_function(new_coord)
-        y_gauss0 = gauss_function(new_coord)
-        y_lin = [i[2] for i in y_lin0]
-        y_quad = [i[2] for i in y_quad0]
-        y_gauss = [i[2] for i in y_gauss0]
-
+    def compare(new_coord, y_res1):
+        """
+              Алгоритм сравнения и нахождения оптимального варианта для аппроксимации
+              :param new_coord: Список с координатми
+              :param y_res: Итоговый результат
+        """
+        y_lin0 = linear_function(new_coord)[1]
+        y_quad0 = quadratic_function(new_coord)[1]
+        y_gauss0 = gauss_function(new_coord)[1]
+        y_lin = [j[2] for j in y_lin0]
+        y_quad = [j[2] for j in y_quad0]
+        y_gauss = [j[2] for j in y_gauss0]
+        list_y = [y_quad, y_gauss]
+        y_coord_div = [j[1] for j in new_coord]  # Координаты по y исходной функции
         # Считаем дисперсию и выбираем лучший вариант для аппроксимации
         # sum(y - yi)^2   min ?
+        best_sigma = sum([(y_coord_div[j] - y_lin[j]) ** 2 for j in range(len(y_coord_div))])
+        best_y = y_lin
+        for yi in list_y:
+            t = sum([(y_coord_div[j] - yi[j]) ** 2 for j in range(len(y_coord_div))])
+            if t <= best_sigma:
+                best_sigma = t
+                best_y = yi
+                
+        y_res1 = best_y
 
+        return y_res1
 
-        index = i
+    index = 0  # Индеск предыдущего начала разделения списка
+    y_res = []  # Итоговый результат после кусочной аппроксимации
+    len_d_index = len(dividing_index)
+    count = 0  # Счётчик
+    if len_d_index == 0:
+        new_coord = coord
+        new_res = compare(new_coord = new_coord, y_res1 = y_res)
+        y_res += new_res
+    else:
+        if count != len_d_index:
+            for i in dividing_index:
+                new_coord = coord[index:i+1]
+                y_res += compare(new_coord=new_coord, y_res1=y_res)
+                index = i
+                count += 1
 
-    return
+            new_coord = coord[index:]
+            y_res += compare(new_coord=new_coord, y_res1=y_res)
+
+    return y_res
 
 # Для теста:
 

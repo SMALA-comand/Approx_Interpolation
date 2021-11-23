@@ -19,13 +19,11 @@ def get_graphics(path = "cvss.csv"):
     x2 = [i[0] for i in plan2]
     y2 = [i[1] for i in plan2]
 
-    # Посчитаем кусочную линейную апроксимацию по частям (9 частей по 27)
-    y_linear2 = []
-    for j in range(1,10):
-        plan3 = plan2[(27*j-27):27*j]
-        linear_plan2 = linear_function(coord=plan3)[1]
-        for k in linear_plan2:
-            y_linear2.append(k[2])
+    # Посчитаем кусочную апроксимацию по частям (новым алгоритмом, понадобится для сравнения
+    # в задании 2.2-2.5 из темы 5) p.s. Мне было лень менять имена  y_linear2
+    y_linear2 = splitting_appr(coord=plan2)
+    print(y_linear2)
+
 
 
     # считаем аппроксимацию линейной функцией
