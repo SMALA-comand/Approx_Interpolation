@@ -297,11 +297,10 @@ def splitting_appr(coord):
             value = (prev_min_idx + prev_max_idx) / 2
             dividing_index.append(value)
 
-    def compare(new_coord, y_res1):
+    def compare(new_coord):
         """
               Алгоритм сравнения и нахождения оптимального варианта для аппроксимации
               :param new_coord: Список с координатми
-              :param y_res: Итоговый результат
         """
         y_lin0 = linear_function(new_coord)[1]
         y_quad0 = quadratic_function(new_coord)[1]
@@ -320,7 +319,7 @@ def splitting_appr(coord):
             if t <= best_sigma:
                 best_sigma = t
                 best_y = yi
-                
+
         y_res1 = best_y
 
         return y_res1
@@ -331,18 +330,18 @@ def splitting_appr(coord):
     count = 0  # Счётчик
     if len_d_index == 0:
         new_coord = coord
-        new_res = compare(new_coord = new_coord, y_res1 = y_res)
+        new_res = compare(new_coord = new_coord)
         y_res += new_res
     else:
         if count != len_d_index:
             for i in dividing_index:
                 new_coord = coord[index:i+1]
-                y_res += compare(new_coord=new_coord, y_res1=y_res)
+                y_res += compare(new_coord=new_coord)
                 index = i
                 count += 1
 
             new_coord = coord[index:]
-            y_res += compare(new_coord=new_coord, y_res1=y_res)
+            y_res += compare(new_coord=new_coord)
 
     return y_res
 
