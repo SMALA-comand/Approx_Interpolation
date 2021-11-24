@@ -39,7 +39,7 @@ def gauss_function(coords):
         coord.append(el)
 
     func = answer_b
-    print(coord)
+    #print(coord)
     return(func, coord)
 
 if __name__ == '__main__':

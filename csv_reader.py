@@ -22,7 +22,11 @@ def get_csv_coord(csv_path):
                     count += 1
                     continue
                 else:
-                    return 'Лишние символы в координатах!'
+                    if len(x) == 10 and '.20' in x:
+                        count += 1
+                        coordinates.append([x, float(y)])
+                    else:
+                        return 'Лишние символы в координатах!'
             else:
                 count += 1
                 coordinates.append([x, y])

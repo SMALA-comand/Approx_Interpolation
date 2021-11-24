@@ -1,10 +1,12 @@
 import numpy as np
+import matplotlib.pyplot as plt
 from sympy import Symbol
 import math
 from scipy.signal import argrelextrema
 from linear_function import linear_function
 from quadratic_function import quadratic_function
 from gauss_function import gauss_function
+from csv_reader import get_csv_coord
 # Нужно прописать установку pip install scipy
 
 
@@ -279,6 +281,9 @@ def splitting_appr(coord):
     # 1) Находим в выборке локальные экстремумы:
     idx_minimas = argrelextrema(y_coord, np.less)[0]  # Индексы локальных минимумов
     idx_maximas = argrelextrema(y_coord, np.greater)[0]  # Индексы локальных максимумов
+
+    #print('min', idx_minimas)
+    #print('max', idx_maximas)
     idx = np.sort(np.concatenate((idx_minimas, idx_maximas))) # Всё вместе и отсортированно
 
     # 2) Заносим в отдельный массив координаты точек, являющихся соседними противоположными парами:
@@ -293,22 +298,25 @@ def splitting_appr(coord):
         elif extreme in idx_maximas:
             prev_max_idx = extreme
         # 3) и 4)
-        if abs(prev_min_idx - prev_max_idx) >= 20:
-            value = (prev_min_idx + prev_max_idx) / 2
+        if abs(prev_min_idx - prev_max_idx) >= 6:
+            value = (prev_min_idx + prev_max_idx) // 2
             dividing_index.append(value)
 
+    print(dividing_index)
     def compare(new_coord):
         """
               Алгоритм сравнения и нахождения оптимального варианта для аппроксимации
               :param new_coord: Список с координатми
         """
+
         y_lin0 = linear_function(new_coord)[1]
         y_quad0 = quadratic_function(new_coord)[1]
         y_gauss0 = gauss_function(new_coord)[1]
         y_lin = [j[2] for j in y_lin0]
-        y_quad = [j[2] for j in y_quad0]
-        y_gauss = [j[2] for j in y_gauss0]
+        y_quad = [j[3] for j in y_quad0]
+        y_gauss = [j[4] for j in y_gauss0]
         list_y = [y_quad, y_gauss]
+
         y_coord_div = [j[1] for j in new_coord]  # Координаты по y исходной функции
         # Считаем дисперсию и выбираем лучший вариант для аппроксимации
         # sum(y - yi)^2   min ?
@@ -335,14 +343,16 @@ def splitting_appr(coord):
     else:
         if count != len_d_index:
             for i in dividing_index:
-                new_coord = coord[index:i+1]
+                new_coord = coord[index:i]
+
                 y_res += compare(new_coord=new_coord)
                 index = i
                 count += 1
 
             new_coord = coord[index:]
             y_res += compare(new_coord=new_coord)
-
+    #diff = len(y_res) - len(dividing_index)
+    #print(diff)
     return y_res
 
 # Для теста:
@@ -350,3 +360,21 @@ def splitting_appr(coord):
 # check_distance(coord = [[0,-1],[1,-3],[2,3],[6,1187]])
 # lagrange_interpolation(coord = [[0,-1],[1,-3],[2,3],[6,1187]])
 # newton_interpolation(coord = [[0,-1],[1,-3],[2,3],[3,1187]], delta = 0)[1]
+if __name__ == '__main__':
+    coord = get_csv_coord("C:\\Users\\Вячеслав\\PycharmProjects\\Approx_Interpolation\\Доллар_США.csv")
+    date = []
+    x_st = []
+    y_st = []
+    for i in range(len(coord)):
+        date.append(coord[i][0])
+        y_st.append(coord[i][1])
+        coord[i][0] = i
+        x_st.append(coord[i][0])
+
+#    print(coord)
+    res = splitting_appr(coord)
+    plt.plot(x_st, res, '-', label = 'Апроксимация')
+    plt.plot(x_st, y_st, label = 'Исходная выборка')
+    plt.legend(loc='best')
+    plt.show()
+
