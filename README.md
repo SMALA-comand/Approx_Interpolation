@@ -4,6 +4,12 @@
 
 Подробности можно узнать в разделе Wiki данного репозитория (✯◡✯)
 
+---
+
+Инструкция по работе с библиотекой по ссылке на Google Colab: 
+https://colab.research.google.com/drive/1zRTZT8Fp9xnojvDtORpKUt_cSvkP5zS7?usp=sharing
+
+---
 
 <details><summary>Краткое описание возможностей:</summary>
 
